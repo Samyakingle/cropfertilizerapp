@@ -1,0 +1,48 @@
+<!-- templates/result.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        .result-box {
+            background-color: #fff;
+            padding: 30px;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        h2 {
+            color: #28a745;
+        }
+        p {
+            font-size: 18px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-box">
+        <h2>Prediction Results</h2>
+        <p><strong>🌾 Recommended Crop:</strong> {{ crop }}</p>
+        <p><strong>🧪 Recommended Fertilizer:</strong> {{ fertilizer }}</p>
+        <a href="/">⏪ Go Back</a>
+    </div>
+</body>
+</html>

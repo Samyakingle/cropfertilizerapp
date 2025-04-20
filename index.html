@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop & Fertilizer Recommendation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color:rgba(224, 212, 212, 0.76);
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px;
+        }
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px 30px;
+            border-radius: 12px;
+            width: 40%;
+        }
+        h2 {
+            text-align: center;
+            color: #00ffcc;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            color: #ccc;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border-radius: 6px;
+            border: none;
+            background-color:rgb(30, 30, 30);
+            color: #fff;
+        }
+        .btn {
+            background-color:rgba(0, 238, 255, 0.73);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #00cc99;
+        }
+        .result {
+            margin-top: 12px;
+            font-size: 1.2em;
+            color:rgb(0, 225, 255);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color:#222; background-color: rgba(255, 255, 255, 0.6); padding: 20px; border-radius: 10px; margin: 20px auto; width: 80%;">
+        🌾 Crop & Fertilizer Recommendation System
+    </h1>
+    
+         <div class="container">
+        <!-- Crop Form -->
+        <div class="form-container">
+            <h2>Crop Recommendation</h2>
+            <form method="POST" action="/predict_crop">
+                <label for="nitrogen">Nitrogen:</label>
+                <input type="number" name="nitrogen" value="{{ request.form.nitrogen or '' }}" required>
+
+                <label for="phosphorus">Phosphorus:</label>
+                <input type="number" name="phosphorus" value="{{ request.form.phosphorus or '' }}" required>
+
+                <label for="potassium">Potassium:</label>
+                <input type="number" name="potassium" value="{{ request.form.potassium or '' }}" required>
+
+                <label for="temperature">Temperature(°C):</label>
+                <input type="number" step="0.1" name="temperature" value="{{ request.form.temperature or '' }}" required>
+
+                <label for="humidity">Humidity(%):</label>
+                <input type="number" step="0.1" name="humidity" value="{{ request.form.humidity or '' }}" required>
+
+                <label for="ph">pH:</label>
+                <input type="number" step="0.1" name="ph" value="{{ request.form.ph or '' }}" required>
+
+                <label for="rainfall">Rainfall(mm):</label>
+                <input type="number" step="0.1" name="rainfall" value="{{ request.form.rainfall or '' }}" required>
+
+                <button type="submit" class="btn">Get Recommendation</button>
+            </form>
+            {% if crop_result %}
+            <div class="result">
+                🌾 Recommended Crop: <strong>{{ crop_result }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Fertilizer Form -->
+        <div class="form-container">
+            <h2>Fertilizer Recommendation</h2>
+            <form method="POST" action="/predict_fertilizer">
+                <label for="temp_f">Temperature(°C):</label>
+                <input type="number" step="0.1" name="temp_f" value="{{ request.form.temp_f or '' }}" required>
+
+                <label for="humidity_f">Humidity(%):</label>
+                <input type="number" step="0.1" name="humidity_f" value="{{ request.form.humidity_f or '' }}" required>
+
+                <label for="moisture">Moisture:</label>
+                <input type="number" step="0.1" name="moisture" value="{{ request.form.moisture or '' }}" required>
+
+                <label for="soil_type">Soil Type:</label>
+                <select name="soil_type" required>
+                    <option value="">Select</option>
+                    {% for soil in ['Sandy', 'Loamy', 'Black', 'Red', 'Clayey'] %}
+                        <option value="{{ soil }}" {% if request.form.soil_type == soil %}selected{% endif %}>{{ soil }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="crop_type">Crop Type:</label>
+                <select name="crop_type" required>
+                    <option value="">Select</option>
+                    {% for crop in ['Maize', 'Sugarcane', 'Cotton', 'Tobacco', 'Paddy', 'Barley', 'Wheat', 'Millets', 'Oil seeds', 'Pulses', 'Ground Nuts', 'Rice'] %}
+                        <option value="{{ crop }}" {% if request.form.crop_type == crop %}selected{% endif %}>{{ crop }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="N_f">Nitrogen:</label>
+                <input type="number" name="N_f" value="{{ request.form.N_f or '' }}" required>
+
+                <label for="P_f">Phosphorus:</label>
+                <input type="number" name="P_f" value="{{ request.form.P_f or '' }}" required>
+
+                <label for="K_f">Potassium:</label>
+                <input type="number" name="K_f" value="{{ request.form.K_f or '' }}" required>
+
+                <button type="submit" class="btn">Get Recommendation</button>
+            </form>
+            {% if fert_result %}
+            <div class="result">
+                🧪 Recommended Fertilizer: <strong>{{ fert_result }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
